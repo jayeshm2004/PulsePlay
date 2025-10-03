@@ -1,3 +1,5 @@
+import 'package:client/features/auth/repositories/auth_remote_repository.dart';
+import 'package:client/features/auth/view/pages/login_page.dart';
 import 'package:client/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/view/widgets/custom_field.dart';
 import 'package:flutter/material.dart';
@@ -52,22 +54,36 @@ class _MyWidgetState extends State<SignupPage> {
               ),
 
               const SizedBox(height: 15),
-              AuthGradientButton(buttonText: 'Sign Up', onTap: () {}),
+              AuthGradientButton(
+                buttonText: 'Sign Up',
+                onTap: () async {
+                  await AuthRemoteRepository().signup(
+                    name: namecontroller.text,
+                    email: emailcontroller.text,
+                    password: passwordcontroller.text,
+                  );
+                },
+              ),
 
               const SizedBox(height: 15),
-              RichText(
-                text: TextSpan(
-                  text: "Already Have an Account?",
-                  style: Theme.of(context).textTheme.titleMedium,
-                  children: [
-                    TextSpan(
-                      text: "Sign In",
-                      style: TextStyle(
-                        color: Colors.pink,
-                        fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
+                } ,
+                child: RichText(
+                  text: TextSpan(
+                    text: "Already Have an Account?",
+                    style: Theme.of(context).textTheme.titleMedium,
+                    children: [
+                      TextSpan(
+                        text: "Sign In",
+                        style: TextStyle(
+                          color: Colors.pink,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
