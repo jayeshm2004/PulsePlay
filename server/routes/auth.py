@@ -8,7 +8,7 @@ from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
 from pydantic_schemas.user_login import UserLogin
-
+import jwt
 router=APIRouter()
 
 @router.post('/signup',status_code=201)
@@ -51,5 +51,15 @@ def login_user(user:UserLogin,db:Session=Depends(get_db)):
         raise HTTPException(400,'password doesn\'t match')
     
     
-    return user_db
+    token=jwt.encode(
+        {
+            'id':user_db.id
+        },
+        'password_key'
+    )
+    
+    return {
+        'token':token,
+        'user':user_db,
+    }
     
